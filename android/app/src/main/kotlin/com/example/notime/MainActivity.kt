@@ -1,4 +1,4 @@
-package com.bit.notime
+package com.example.notime
 
 import io.flutter.embedding.android.FlutterActivity
 
