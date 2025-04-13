@@ -8,10 +8,7 @@ void main() {
 class NotimeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'No Time',
-      home: MainUI(),
-    );
+    return MaterialApp(title: 'No Time', home: MainUI());
   }
 }
 
@@ -21,8 +18,10 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
-  static const int startTimeMs = 65 * 1000; // 1 min 5 sec
-  int timeLeftMs = startTimeMs;
+  static const List<int> defaultStartTimeMs = [65 * 1000, 30 * 1000, 5 * 1000, 150 * 1000]; // 1 min 5 sec
+  int startTimeMs = defaultStartTimeMs[0];
+  int timeLeftMs = defaultStartTimeMs[0];
+  int modeIndex = 0;
   Timer? timer;
   Color bgdefault = Colors.lightGreen;
   Color bgcolor = Colors.lightGreen;
@@ -73,38 +72,72 @@ class _MainUIState extends State<MainUI> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('No Time', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+        title: Text(
+          'No Time',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         backgroundColor: bgcolor,
         elevation: 0,
       ),
       backgroundColor: bgdefault,
       body: GestureDetector(
-  onTap: resetAndStart,
-  onLongPress: resetOnly,
-  behavior: HitTestBehavior.opaque, // ensures tap events go through empty areas
-  child: Container(
-    width: double.infinity,
-    height: double.infinity,
-    color: bgcolor, // this can be transparent if you prefer
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          minutes > 0
-              ? '${minutes.toString().padLeft(2, '0')}'
-              : '${seconds.toString().padLeft(2, '0')}',
-          style: TextStyle(color: Colors.white, fontSize: 96, fontWeight: FontWeight.w900),
+        onTap: resetAndStart,
+        onLongPress: resetOnly,
+        behavior:
+            HitTestBehavior.opaque, // ensures tap events go through empty areas
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: bgcolor, // this can be transparent if you prefer
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                minutes > 0
+                    ? '${minutes.toString().padLeft(2, '0')}'
+                    : '${seconds.toString().padLeft(2, '0')}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 96,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              Text(
+                minutes > 0
+                    ? '${seconds.toString().padLeft(2, '0')}.${(millis ~/ 10)}'
+                    : '.${millis.toString().padLeft(2, '0')}',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 56,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
         ),
-        Text(
-          minutes > 0
-              ? '${seconds.toString().padLeft(2, '0')}.${(millis ~/ 10)}'
-              : '.${millis.toString().padLeft(2, '0')}',
-          style: TextStyle(color: Colors.white70, fontSize: 56, fontWeight: FontWeight.w900),
-        ),
-      ],
-    ),
-  ),
-),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _cycleMode,
+        tooltip: 'Cycle',
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.lightGreen,
+        child: const Icon(Icons.refresh_sharp),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _cycleMode() {
+    modeIndex++;
+    if (modeIndex >= defaultStartTimeMs.length){
+      modeIndex = 0;
+    }
+    setState(() {
+      startTimeMs = defaultStartTimeMs[modeIndex];
+      timeLeftMs = defaultStartTimeMs[modeIndex];
+    });
   }
 }
