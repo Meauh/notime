@@ -21,9 +21,11 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
-  static const int startTimeMs = 90 * 1000; // 1 min 30 sec
+  static const int startTimeMs = 65 * 1000; // 1 min 5 sec
   int timeLeftMs = startTimeMs;
   Timer? timer;
+  Color bgdefault = Colors.lightGreen;
+  Color bgcolor = Colors.lightGreen;
 
   void startTimer() {
     timer?.cancel();
@@ -32,6 +34,7 @@ class _MainUIState extends State<MainUI> {
         t.cancel();
         setState(() {
           timeLeftMs = 0;
+          bgcolor = Colors.redAccent;
         });
       } else {
         setState(() {
@@ -44,6 +47,7 @@ class _MainUIState extends State<MainUI> {
   void resetAndStart() {
     setState(() {
       timeLeftMs = startTimeMs;
+      bgcolor = bgdefault;
     });
     startTimer();
   }
@@ -70,10 +74,10 @@ class _MainUIState extends State<MainUI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('No Time', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgcolor,
         elevation: 0,
       ),
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: bgdefault,
       body: GestureDetector(
   onTap: resetAndStart,
   onLongPress: resetOnly,
@@ -81,7 +85,7 @@ class _MainUIState extends State<MainUI> {
   child: Container(
     width: double.infinity,
     height: double.infinity,
-    color: Colors.lightGreen, // this can be transparent if you prefer
+    color: bgcolor, // this can be transparent if you prefer
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
