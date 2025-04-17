@@ -18,9 +18,14 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
-  static const List<int> defaultStartTimeMs = [65 * 1000, 30 * 1000, 5 * 1000, 150 * 1000]; // 1 min 5 sec
-  int startTimeMs = defaultStartTimeMs[0];
-  int timeLeftMs = defaultStartTimeMs[0];
+  static const List<(int, String)> defaultStartTimeMs = [
+    (65 * 1000, "Normal"),
+    (30 * 1000, "Fast"),
+    (5 * 1000, "5 Sec"),
+    (150 * 1000, "Slow"),
+  ];
+  int startTimeMs = defaultStartTimeMs[0].$1;
+  int timeLeftMs = defaultStartTimeMs[0].$1;
   int modeIndex = 0;
   Timer? timer;
   Color bgdefault = Colors.lightGreen;
@@ -76,7 +81,7 @@ class _MainUIState extends State<MainUI> {
           'No Time',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 22,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -120,24 +125,38 @@ class _MainUIState extends State<MainUI> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _cycleMode,
-        tooltip: 'Cycle',
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.lightGreen,
-        child: const Icon(Icons.refresh_sharp),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      persistentFooterButtons: [
+        Text(
+          defaultStartTimeMs[modeIndex].$2,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Spacer(),
+        IconButton.filled(
+          onPressed: _cycleMode,
+          icon: Icon(Icons.loop),
+          tooltip: 'Cycle',
+          style: IconButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.lightGreen[700],
+            iconSize: 32,
+          ),
+        ),
+      ],
     );
   }
 
   void _cycleMode() {
     modeIndex++;
-    if (modeIndex >= defaultStartTimeMs.length){
+    if (modeIndex >= defaultStartTimeMs.length) {
       modeIndex = 0;
     }
     setState(() {
-      startTimeMs = defaultStartTimeMs[modeIndex];
-      timeLeftMs = defaultStartTimeMs[modeIndex];
+      startTimeMs = defaultStartTimeMs[modeIndex].$1;
+      timeLeftMs = defaultStartTimeMs[modeIndex].$1;
     });
   }
 }
