@@ -87,7 +87,7 @@ class _MainUIState extends State<MainUI> {
     int millis = ((timeLeftMs % 1000) / 10).floor();
 
     return Scaffold(
-      backgroundColor: bgdefault,
+      backgroundColor: bgcolor,
       body: GestureDetector(
         onTap: resetAndStart,
         onLongPress: resetOnly,
@@ -96,7 +96,7 @@ class _MainUIState extends State<MainUI> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          color: bgcolor, // this can be transparent if you prefer
+          color: Colors.transparent, // this can be transparent if you prefer
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -124,6 +124,7 @@ class _MainUIState extends State<MainUI> {
           ),
         ),
       ),
+      
       persistentFooterButtons: [
         Row(
           children: [
@@ -139,7 +140,7 @@ class _MainUIState extends State<MainUI> {
             Spacer(),
             IconButton.filled(
               onPressed: _cycleMode,
-              icon: Icon(Icons.loop),
+              icon: Icon(Icons.style),
               tooltip: 'Cycle',
               style: IconButton.styleFrom(
                 backgroundColor: Colors.white,
