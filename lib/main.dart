@@ -63,6 +63,17 @@ class _MainUIState extends State<MainUI> {
     });
   }
 
+  void _cycleMode() {
+    modeIndex++;
+    if (modeIndex >= defaultStartTimeMs.length) {
+      modeIndex = 0;
+    }
+    setState(() {
+      startTimeMs = defaultStartTimeMs[modeIndex].$1;
+      timeLeftMs = defaultStartTimeMs[modeIndex].$1;
+    });
+  }
+
   @override
   void dispose() {
     timer?.cancel();
@@ -76,18 +87,6 @@ class _MainUIState extends State<MainUI> {
     int millis = ((timeLeftMs % 1000) / 10).floor();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'No Time',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: bgcolor,
-        elevation: 0,
-      ),
       backgroundColor: bgdefault,
       body: GestureDetector(
         onTap: resetAndStart,
@@ -126,37 +125,31 @@ class _MainUIState extends State<MainUI> {
         ),
       ),
       persistentFooterButtons: [
-        Text(
-          defaultStartTimeMs[modeIndex].$2,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Spacer(),
-        IconButton.filled(
-          onPressed: _cycleMode,
-          icon: Icon(Icons.loop),
-          tooltip: 'Cycle',
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.lightGreen[700],
-            iconSize: 32,
-          ),
+        Row(
+          children: [
+            Spacer(),
+              Text(
+                defaultStartTimeMs[modeIndex].$2,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+            ),
+            Spacer(),
+            IconButton.filled(
+              onPressed: _cycleMode,
+              icon: Icon(Icons.loop),
+              tooltip: 'Cycle',
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.lightGreen[700],
+                iconSize: 32,
+              ),
+            ),
+          ],
         ),
       ],
     );
-  }
-
-  void _cycleMode() {
-    modeIndex++;
-    if (modeIndex >= defaultStartTimeMs.length) {
-      modeIndex = 0;
-    }
-    setState(() {
-      startTimeMs = defaultStartTimeMs[modeIndex].$1;
-      timeLeftMs = defaultStartTimeMs[modeIndex].$1;
-    });
   }
 }
