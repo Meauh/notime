@@ -60,6 +60,7 @@ class _MainUIState extends State<MainUI> {
     timer?.cancel();
     setState(() {
       timeLeftMs = startTimeMs;
+      bgcolor = bgdefault;
     });
   }
 
@@ -72,6 +73,7 @@ class _MainUIState extends State<MainUI> {
       startTimeMs = defaultStartTimeMs[modeIndex].$1;
       timeLeftMs = defaultStartTimeMs[modeIndex].$1;
     });
+    resetOnly();
   }
 
   @override
