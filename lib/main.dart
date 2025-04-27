@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(NotimeApp());
@@ -18,10 +19,13 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
+  final AudioPlayer player = AudioPlayer();
+
   static const List<(int, String)> defaultStartTimeMs = [
     (65 * 1000, "Normal"),
+    (1500 * 1000, "Pomodoro"),
+    (5 * 1000, "Swift"),
     (30 * 1000, "Fast"),
-    (5 * 1000, "5 Sec"),
     (150 * 1000, "Slow"),
   ];
   int startTimeMs = defaultStartTimeMs[0].$1;
@@ -35,6 +39,7 @@ class _MainUIState extends State<MainUI> {
     timer?.cancel();
     timer = Timer.periodic(Duration(milliseconds: 10), (t) {
       if (timeLeftMs <= 0) {
+        player.play(AssetSource('audio/alarm_sound.wav'));
         t.cancel();
         setState(() {
           timeLeftMs = 0;
@@ -49,6 +54,7 @@ class _MainUIState extends State<MainUI> {
   }
 
   void resetAndStart() {
+    player.play(AssetSource('audio/click_sound.wav'));
     setState(() {
       timeLeftMs = startTimeMs;
       bgcolor = bgdefault;
