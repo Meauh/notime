@@ -6,9 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []); //remove status bar and set black color
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]); //remove status bar and set black color
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge); //remove status bar and set black color
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack); //temp immersive (any touch or swipe cancel it)
+
   runApp(NotimeApp());
 }
 
@@ -161,6 +164,7 @@ class _MainUIState extends State<MainUI> with SingleTickerProviderStateMixin {
                           right: 0,
                           child: IconButton(
                             onPressed: _toggleFullscreen,
+                            tooltip: "Toggle fullscreen.",
                             icon:
                                 _visible
                                     ? Icon(
